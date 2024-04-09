@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Routes, Route, useNavigate} from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -25,13 +26,18 @@ import MailIcon from '@mui/icons-material/Mail';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import Logo from './logo.png'; // Update with the correct path to your logo image
+import Logo from '../Images/logo.png'; // Update with the correct path to your logo image
 import VerifiedIcon from '@mui/icons-material/Verified';
 import CardMembershipIcon from '@mui/icons-material/CardMembership';
 import NoteIcon from '@mui/icons-material/Note';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
-import '../Styles/Verify.css';
-import VerifyPage from '../pages/Verify';
+import '../Styles/Global.css';
+import Verify from '../pages/Verify';
+import Certificate from '../pages/Certificate';
+import Document from '../pages/Document';
+import Setting from '../pages/Setting';
+import Guide from '../pages/Guide';
+import Tooltip from '@mui/material/Tooltip';
 
 const drawerWidth = 200;
 
@@ -102,12 +108,11 @@ const Drawer = styled(MuiDrawer, {
 export default function Sidebar() {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-
+  const navigate = useNavigate();
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -127,7 +132,9 @@ export default function Sidebar() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
+const Done =()=>{
+  navigate('/login')
+};
   const menuId = "primary-search-account-menu";
   const mobileMenuId = 'primary-search-account-menu-mobile';
 
@@ -148,8 +155,8 @@ export default function Sidebar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+        <IconButton size="large" aria-label="show 1 new mails" color="inherit">
+          <Badge badgeContent={1} color="error">
             <MailIcon />
           </Badge>
         </IconButton>
@@ -158,10 +165,10 @@ export default function Sidebar() {
       <MenuItem>
         <IconButton
           size="large"
-          aria-label="show 17 new notifications"
+          aria-label="show 1 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={1} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -185,7 +192,7 @@ export default function Sidebar() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} >
+      <AppBar position="fixed" open={open} style={{backgroundColor:"#0075F3"}} >
         <Toolbar>
           <IconButton
             color="inherit"
@@ -204,35 +211,41 @@ export default function Sidebar() {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Tooltip title="Setting" placement="bottom" arrow>
             <IconButton
               size="large"
               aria-label="show 4 new mails"
               color="inherit"
             >
-              <Badge badgeContent={4} color="error">
+              <Badge badgeContent={1} color="error">
                 <SettingsIcon />
               </Badge>
             </IconButton>
+            </Tooltip>
+            <Tooltip title="Notifications" placement="bottom" arrow>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
+              <Badge badgeContent={1} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            </Tooltip>
+            <Tooltip title="Logout" placement="bottom" arrow>
             <IconButton
               size="large"
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick={Done}
               color="inherit"
             >
               <ExitToAppIcon />
             </IconButton>
+            </Tooltip>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -270,7 +283,9 @@ export default function Sidebar() {
         </DrawerHeader>
         <Divider />
         <List>
-            <ListItem  disablePadding sx={{ display: "block" }}>
+            <ListItem  disablePadding sx={{ display: "block" }} onClick={() => {
+              navigate("/verify");
+            }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -278,6 +293,7 @@ export default function Sidebar() {
                   px: 2.5,
                 }}
               >
+                <Tooltip title="Verify Page" placement="right" arrow>
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
@@ -287,10 +303,13 @@ export default function Sidebar() {
                 >
                   <VerifiedIcon/>
                 </ListItemIcon>
+                </Tooltip>
                 <ListItemText primary="Verify" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-            <ListItem  disablePadding sx={{ display: "block" }}>
+            <ListItem  disablePadding sx={{ display: "block" }} onClick={() => {
+              navigate("/certificate");
+            }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -298,6 +317,7 @@ export default function Sidebar() {
                   px: 2.5,
                 }}
               >
+                <Tooltip title="Certificate Page" placement="right" arrow>
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
@@ -307,10 +327,13 @@ export default function Sidebar() {
                 >
                   <CardMembershipIcon/>
                 </ListItemIcon>
+                </Tooltip>
                 <ListItemText primary="Certificate" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-            <ListItem  disablePadding sx={{ display: "block" }}>
+            <ListItem  disablePadding sx={{ display: "block" }} onClick={() => {
+              navigate("/document");
+            }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -318,6 +341,7 @@ export default function Sidebar() {
                   px: 2.5,
                 }}
               >
+                <Tooltip title="Document Page" placement="right" arrow>
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
@@ -327,10 +351,13 @@ export default function Sidebar() {
                 >
                   <NoteIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Document" sx={{ opacity: open ? 1 : 0 }} />
+                </Tooltip>
+                <ListItemText primary="document" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-            <ListItem  disablePadding sx={{ display: "block" }}>
+            <ListItem  disablePadding sx={{ display: "block" }} onClick={() => {
+              navigate("/setting");
+            }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -338,6 +365,7 @@ export default function Sidebar() {
                   px: 2.5,
                 }}
               >
+                 <Tooltip title="Setting Page" placement="right" arrow>
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
@@ -347,10 +375,13 @@ export default function Sidebar() {
                 >
                   <SettingsIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Setting" sx={{ opacity: open ? 1 : 0 }} />
+                </Tooltip>
+                <ListItemText primary="setting" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-            <ListItem  disablePadding sx={{ display: "block" }}>
+            <ListItem  disablePadding sx={{ display: "block" }} onClick={() => {
+              navigate("/guide");
+            }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -358,6 +389,7 @@ export default function Sidebar() {
                   px: 2.5,
                 }}
               >
+                 <Tooltip title="Guide Page" placement="right" arrow>
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
@@ -367,14 +399,36 @@ export default function Sidebar() {
                 >
                   <LocalLibraryIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Guide" sx={{ opacity: open ? 1 : 0 }} />
+                </Tooltip>
+                <ListItemText primary="guide" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <VerifyPage/>
+        <Routes>
+          <Route path="/verify" element={<Verify />} />
+          <Route path="/certificate" element={<Certificate />} />
+          <Route path="/document" element={<Document />} />
+          <Route path="/setting" element={<Setting />} />
+          <Route path="/guide" element={<Guide />} />
+        </Routes>
+        {/* <div style={{ display: pageopen === "verify" ? "block" : "none" }}>
+          <VerifyPage />
+        </div>
+        <div style={{ display: pageopen === "certificate" ? "block" : "none" }}>
+          <CertificatePage />
+        </div>
+        <div style={{ display: pageopen === "document" ? "block" : "none" }}>
+          <DocumentPage />
+        </div>
+        <div style={{ display: pageopen === "setting" ? "block" : "none" }}>
+          <SettingPage />
+        </div>
+        <div style={{ display: pageopen === "guide" ? "block" : "none" }}>
+          <GuidePage />
+        </div> */}
       </Box>
     </Box>
   );

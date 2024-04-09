@@ -1,76 +1,228 @@
-import React from "react";
-import { styled, alpha } from '@mui/material/styles';
-import Button from "@mui/material/Button";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  IconButton,
+  Grid,
+  TextField,
+  Select,
+  MenuItem,
+  Button,
+} from "@mui/material";
+import { styled, alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import SearchIcon from '@mui/icons-material/Search';
-import InputBase from '@mui/material/InputBase';
-import "../Styles/Verify.css";
-import Table from '../pages/Table';
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
+import CancelIcon from "@mui/icons-material/Cancel";
+import "../Styles/Global.css";
+import Table from "../pages/Table";
+
 const Verify = () => {
-  const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
+  const [openPopup, setOpenPopup] = useState(false);
+  const [otpValues, setOtpValues] = useState(Array(6).fill(""));
+
+  const handleChange = (index, event) => {
+    const value = event.target.value;
+    if (!isNaN(value) && value !== "") {
+      const updatedOtpValues = [...otpValues];
+      updatedOtpValues[index] = value;
+      setOtpValues(updatedOtpValues);
+    }
+  };
+
+  const handleBackspace = (index, event) => {
+    if (event.key === "Backspace" && index > 0 && otpValues[index] === "") {
+      const updatedOtpValues = [...otpValues];
+      updatedOtpValues[index - 1] = "";
+      setOtpValues(updatedOtpValues);
+    }
+  };
+
+  const togglePopup = () => {
+    setOpenPopup(!openPopup);
+  };
+
+  const [open, setOpen] = useState(false);
+
+  const Search = styled("div")(({ theme }) => ({
+    position: "relative",
     borderRadius: theme.shape.borderRadius,
-    border:"1px solid gray",
+    border: "1px solid gray",
     backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
+    "&:hover": {
       backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
-    marginLeft:0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
-      width: 'auto',
+      width: "auto",
     },
   }));
-  
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
+
+  const SearchIconWrapper = styled("div")(({ theme }) => ({
     padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   }));
 
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
+    color: "inherit",
+    "& .MuiInputBase-input": {
       padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('md')]: {
-        width: '20ch',
+      transition: theme.transitions.create("width"),
+      width: "100%",
+      [theme.breakpoints.up("md")]: {
+        width: "20ch",
       },
     },
   }));
+  const [selectedValue, setSelectedValue] = useState("All");
+  const [selectedValuecountry, setSelectedValuecountry] = useState("USA");
+
+  const handleChangepurpose = (event) => {
+    setSelectedValue(event.target.value);
+  };
+  const handleChangecountry = (event) => {
+    setSelectedValuecountry(event.target.value);
+  };
+
   return (
     <div className="vmain">
       <div className="vtophead">
         <Typography variant="h6">Credential</Typography>
+        <div className="anbtn">
         <Button
           variant="contained"
           style={{
             marginLeft: "50px",
-          }}>
-          Verifie New Credential
+          }}
+          onClick={togglePopup}>
+          Add New
         </Button>
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ "aria-label": "search" }}
-          />
-        </Search>
+        </div>
       </div>
       <div className="vtable">
-          <Table/>
+        <Table />
       </div>
+      <Dialog
+        open={openPopup}
+        onClose={togglePopup}
+        className="popup"
+        style={{width:"40%", height:"100%",left:400,borderRadius:10}}
+        BackdropProps={{
+          sx: { backdropFilter: "blur(3px)" },
+        }}>
+        <DialogTitle style={{ fontSize:"25px", alignItems:"center" }}>Add New Credential</DialogTitle>
+        <form noValidate autoComplete="off">
+          <Grid container spacing={2} style={{ padding: "20px" }}>
+            <Grid item xs={12}>
+             <Typography variant="h6">Phone Number</Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={4}>
+                  <Select
+                    value={selectedValuecountry}
+                    onChange={handleChangecountry}
+                    style={{ width: "50%", height:"40px", left:0 }}>
+                    <MenuItem value="+1">USA</MenuItem>
+                    <MenuItem value="+44">UK</MenuItem>
+                    <MenuItem value="+91">IN</MenuItem>
+                  </Select>
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="outlined-basic"
+                    placeholder="+0000000000"
+                    variant="outlined"
+                    inputProps={{ maxLength: 10 }}
+                    style={{ width: "170%", marginLeft: "-60%" }}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <div className="gotp">
+                  <Button
+                    variant="contained"
+                    style={{ width: "80%", top: 1,left:"18px" }}>
+                    Get OTP
+                  </Button>
+                  </div>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+                {otpValues.map((value, index) => (
+                  <Grid item xs={2} key={index}>
+                    <div className="ibox">
+                    <TextField
+                      type="text"
+                      value={value}
+                      onChange={(e) => handleChange(index, e)}
+                      onKeyDown={(e) => handleBackspace(index, e)}
+                      variant="outlined"
+                      inputProps={{ maxLength: 1 }}
+                      style={{ width: "100%" }}
+                    />
+                    </div>
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+            <Grid item xs={12} style={{ display: "flex" }}>
+              <a href="/" style={{ textDecoration: "none" }}>
+                Resend OTP
+              </a>
+              <div className="votp">
+              <Button variant="contained" style={{ width: "100%", left: 230 }}>
+                Verify OTP
+              </Button>
+              </div>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography variant="h6">Purpose</Typography>
+              <Select
+                value={selectedValue}
+                variant="outlined"
+                onChange={handleChangepurpose}
+                fullWidth>
+                <MenuItem value="All">All</MenuItem>
+                <MenuItem value="Study">Study</MenuItem>
+                <MenuItem value="Personal">Personal</MenuItem>
+                <MenuItem value="Educational">Educational</MenuItem>
+              </Select>
+            </Grid>
+            <Grid item xs={6}>
+              <div className="pcbtn">
+              <Button
+                variant="outlined"
+                onClick={togglePopup}
+                fullWidth
+                style={{ marginTop: "10px",width:"40%", left:"55%" }}>
+                Cancel
+              </Button>
+              </div>
+            </Grid>
+            <Grid item xs={6}>
+              <div className="psbtn">
+              <Button
+                variant="contained"
+                fullWidth
+                style={{ marginTop: "10px", width:"40%"}}>
+                Submit
+              </Button>
+              </div>
+            </Grid>
+          </Grid>
+        </form>
+      </Dialog>
     </div>
   );
 };
