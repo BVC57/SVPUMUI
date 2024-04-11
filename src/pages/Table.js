@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -45,14 +45,12 @@ const sample = [
   ['Mint Chocolate Chip Cookies', '+9898989898', 'Movie Marathon', '14/03/2027', 'www.saksham.com']
   ];
 
-const rowsPerPage = 15;
-
 const columns = [
-  { width: 200, label: 'Name', dataKey: 'Name' },
-  { width: 120, label: 'PhoneNo', dataKey: 'PhoneNo' },
-  { width: 120, label: 'Purpose', dataKey: 'Purpose' },
-  { width: 120, label: 'Date', dataKey: 'Date' },
-  { width: 150, label: 'View', dataKey: 'View' },
+  { width: 200, label: 'Name', dataKey: 0 },
+  { width: 120, label: 'PhoneNo', dataKey: 1 },
+  { width: 120, label: 'Purpose', dataKey: 2 },
+  { width: 120, label: 'Date', dataKey: 3 },
+  { width: 150, label: 'View', dataKey: 4 },
 ];
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -77,6 +75,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+const PaperContainer = styled(Paper)(({ theme }) => ({
+  width: '100%',
+  marginTop: '3%',
+  overflowX: 'auto', // Enable horizontal scroll for small screens
+  '@media (max-width: 600px)': {
+    width: '100%',
+  },
+  '@media (max-width: 400px)': {
+    width: '100%',
+  },
+}));
+
 export default function MyTable() {
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
@@ -94,14 +104,15 @@ export default function MyTable() {
     row[0].toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const rowsPerPage = 8; // Adjust rows per page based on screen size
   const totalRows = filteredRows.length;
   const indexOfLastRow = page * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
   const displayedRows = filteredRows.slice(indexOfFirstRow, indexOfLastRow);
 
   return (
-    <Paper style={{ height: 400, width: '100%', marginTop: '3%' }}>
-      <div style={{ display: 'flex', alignItems: 'center', padding: '8px',height:"40px",float:"right",border:"1px solid gray", borderRadius:"10px" }}>
+    <PaperContainer>
+      <div className="tsearch" style={{ display: 'flex', alignItems: 'center', padding: '8px', border: '1px solid gray', borderRadius: '10px',width:"20%", float:"right",height:"40px",marginBottom:"10px" }}>
         <SearchIcon />
         <InputBase
           type="text"
@@ -131,13 +142,13 @@ export default function MyTable() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Stack spacing={2} style={{ alignItems: 'center', marginTop: '2%' }}>
+      <Stack spacing={2} style={{ alignItems: 'center', marginTop: '2%', justifyContent: 'center' }}>
         <Pagination
           count={Math.ceil(totalRows / rowsPerPage)}
           page={page}
+          onChange={handleChangePage}
           variant="outlined"
           shape="rounded"
-          onChange={handleChangePage}
           sx={{
             '& .Mui-selected': {
               backgroundColor: '#1976d2 !important',
@@ -152,6 +163,6 @@ export default function MyTable() {
           }}
         />
       </Stack>
-    </Paper>
+    </PaperContainer>
   );
 }

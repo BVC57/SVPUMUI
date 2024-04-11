@@ -1,3 +1,6 @@
+/* body{
+  caret-color: transparent;
+} */
 .vtophead {
   display: flex;
 }
@@ -75,6 +78,11 @@
     width: 250px;
     height: 150px;
   }
+  .showimg img{
+    width: 100% !important;
+    border: 15px solid lightgray !important;
+    border-radius: 10px !important;
+  }
   .MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-1.css-a5rdam-MuiGrid-root {
     display: block;
   }
@@ -100,7 +108,7 @@
   }
   .anbtn
     button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.MuiButton-colorPrimary.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.MuiButton-colorPrimary.css-sghohy-MuiButtonBase-root-MuiButton-root {
-    margin-left: -5px !important;
+    margin-left: 60% !important;
     margin-top: -60px !important;
   }
   .gotp
@@ -113,6 +121,9 @@
     button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.MuiButton-colorPrimary.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.MuiButton-colorPrimary.css-sghohy-MuiButtonBase-root-MuiButton-root {
     margin-left: -148px;
     width: 115px !important;
+  }
+  .vtable{
+    margin-top: 1px;
   }
   .vtophead
     h6.MuiTypography-root.MuiTypography-h6.css-2ulfj5-MuiTypography-root {
@@ -190,5 +201,13 @@
   .MuiDialog-root.popup.MuiModal-root.css-zw3mfo-MuiModal-root-MuiDialog-root{
     left: 1px !important;
     width: 100% !important;
+  }
+  .tsearch{
+    width: 35% !important;
+    height: 35px !important;
+    float: right;
+  }
+  main.MuiBox-root.css-zxdg2z{
+    width: 50%;
   }
 }
